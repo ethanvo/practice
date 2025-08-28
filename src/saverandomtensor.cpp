@@ -1,6 +1,7 @@
 #include <saverandomtensor.hpp>
 #include <random>
 #include <stdexcept>
+#include <cstdlib>
 
 using namespace H5;
 
@@ -16,12 +17,14 @@ void saveRandomTensorHDF5(const std::string& filename,
   hsize_t totalSize = 1;
   for (auto d : shape) totalSize *= d;
 
+  // Allocate raw array
+  double* data = new double[totalSize];
+
   // Generate random data
-  std::vector<double> data(totalSize);
   std::mt19937 gen(std::random_device{}());
   std::uniform_real_distribution<double> dist(0.0, 1.0);
-  for (auto &x : data) {
-    x = dist(gen);
+  for (hsize_t i = 0; i < totalSize; ++i) {
+    data[i] = dist(gen);
   }
 
   // Create HDF5 file
@@ -34,5 +37,8 @@ void saveRandomTensorHDF5(const std::string& filename,
   DataSet dataset = file.createDataSet(datasetName, PredType::NATIVE_DOUBLE, dataspace);
 
   // Write data to dataset
-  dataset.write(data.data(), PredType::NATIVE_DOUBLE);
+  dataset.write(data, PredType::NATIVE_DOUBLE);
+
+  // Free allocated memory
+  delete[] data;
 }
