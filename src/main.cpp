@@ -3,6 +3,7 @@
 #include <readrandomtensor.hpp>
 #include <iostream>
 #include <gemmplan.h>
+#include <choosemnk.h>
 
 int main() {
   // Shape: 3 x 4 x 5 x 6
@@ -47,5 +48,11 @@ int main() {
     std::cerr << "Error constructing GEMM plan: " << e.what() << "\n";
     return 1;
   }
+  
+  // Test choose_mnk
+  size_t mem_limit_bytes = 1000000000;
+  std::tuple<int, int, int> m_n_k = choose_mnk(mem_limit_bytes, sizeof(double));
+  std::cout << "m: " << std::get<0>(m_n_k) << ", n: " << std::get<1>(m_n_k) << ", k: " << std::get<2>(m_n_k) << std::endl;
+
   return 0;
 }

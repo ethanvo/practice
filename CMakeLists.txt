@@ -16,6 +16,7 @@ add_executable(myproject
     src/saverandomtensor.cpp
     src/readrandomtensor.cpp
     src/gemmplan.cpp
+    src/choosemnk.cpp
 )
 
 # Link against HDF5
