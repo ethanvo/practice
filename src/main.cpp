@@ -2,6 +2,7 @@
 #include <saverandomtensor.hpp>
 #include <readrandomtensor.hpp>
 #include <iostream>
+#include <gemmplan.h>
 
 int main() {
   // Shape: 3 x 4 x 5 x 6
@@ -22,5 +23,29 @@ int main() {
   
   // Clean up
   delete[] data;
+  
+  EinsumParsed parsed;
+  parsed.inputs = {"ij", "jk"};
+  parsed.output = "ik";
+  
+  try {
+    GemmPlan plan = make_gemm_plan(parsed);
+    print_plan(plan);
+  } catch (const std::exception &e) {
+    std::cerr << "Error constructing GEMM plan: " << e.what() << "\n";
+    return 1;
+  }
+
+  EinsumParsed parsed2;
+  parsed2.inputs = {"abc", "cde"};
+  parsed2.output = "ade";
+  
+  try {
+    GemmPlan plan = make_gemm_plan(parsed2);
+    print_plan(plan);
+  } catch (const std::exception &e) {
+    std::cerr << "Error constructing GEMM plan: " << e.what() << "\n";
+    return 1;
+  }
   return 0;
 }
