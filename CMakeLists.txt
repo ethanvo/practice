@@ -23,6 +23,11 @@ add_executable(myproject
     src/contract_driver_arrays.cpp
 )
 
+add_executable(gett_test
+    src/gett_test.cpp
+    src/gett.cpp
+)
+
 # Link against HDF5
 target_include_directories(myproject PRIVATE ${HDFT_INCLUDE_DIRS})
 target_link_libraries(myproject PRIVATE ${HDF5_CXX_LIBRARIES} ${HDF5_LIBRARIES})

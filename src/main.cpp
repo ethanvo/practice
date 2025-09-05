@@ -5,6 +5,8 @@
 #include <gemmplan.h>
 #include <choosemnk.h>
 #include <contract_driver_arrays.h>
+#include <gett.h>
+#include <random>
 
 int main() {
   // Shape: 3 x 4 x 5 x 6
